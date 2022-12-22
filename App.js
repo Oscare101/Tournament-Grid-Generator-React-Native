@@ -1,20 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+
+import Game from './screens/Game'
+import CreateTeams from './screens/CreateTeams'
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const [isGame, setIsGame] = useState(false)
+  const [teams, setTeams] = useState([])
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  return isGame ? (
+    <Game
+      teams={teams}
+      onExit={(teams) => {
+        setIsGame(false)
+        setTeams(teams)
+      }}
+    />
+  ) : (
+    <CreateTeams
+      teams={teams}
+      onStartGame={(teams) => {
+        setIsGame(true)
+        setTeams(teams)
+      }}
+    />
+  )
+}
