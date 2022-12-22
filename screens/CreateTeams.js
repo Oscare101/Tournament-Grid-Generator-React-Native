@@ -8,6 +8,7 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native'
+import { FontAwesome5 } from '@expo/vector-icons'
 
 const BigTextInput = (props) => {
   return (
@@ -29,6 +30,7 @@ export default function CreateTeams(props) {
   const [teams, setTeams] = useState(props.teams)
   const [checked, setChecked] = useState(false)
   const [error, setError] = useState('')
+  const [shuffle, setShuffle] = useState(props.shuffle)
 
   function CheckUnic() {
     if (input.toString().split('\n').length < 2) {
@@ -63,7 +65,7 @@ export default function CreateTeams(props) {
       <View style={styles.container}>
         <StatusBar />
         <Text style={styles.title}>Create Teams</Text>
-        {/* <View > */}
+
         <BigTextInput
           multiline
           numberOfLines={4}
@@ -75,9 +77,26 @@ export default function CreateTeams(props) {
           value={input}
           style={styles.input}
         />
-        {/* </View> */}
+
         <TouchableOpacity
-          onPress={() => (checked ? props.onStartGame(teams) : CheckUnic())}
+          activeOpacity={0.8}
+          onPress={() => setShuffle(!shuffle)}
+          style={styles.suffleView}
+        >
+          <View style={styles.iconBlock}>
+            <FontAwesome5
+              name="check"
+              size={20}
+              color={shuffle ? '#000' : '#fff'}
+            />
+          </View>
+          <Text style={styles.shuffleText}>Shuffle teams</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            checked ? props.onStartGame(teams, shuffle) : CheckUnic()
+          }
           style={[
             styles.button,
             { backgroundColor: checked ? '#000' : '#fff' },
@@ -115,12 +134,31 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 10,
   },
+  suffleView: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  iconBlock: {
+    height: 30,
+    width: 30,
+    borderWidth: 2,
+    borderRadius: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  shuffleText: {
+    fontSize: 20,
+  },
   button: {
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
     borderWidth: 2,
+    marginVertical: 10,
   },
   buttonText: {
     letterSpacing: 1,

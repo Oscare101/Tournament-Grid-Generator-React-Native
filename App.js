@@ -7,11 +7,14 @@ import CreateTeams from './screens/CreateTeams'
 export default function App() {
   const [isGame, setIsGame] = useState(false)
   const [teams, setTeams] = useState([])
+  const [shuffle, setShuffle] = useState(false)
 
   return isGame ? (
     <Game
       teams={teams}
-      onExit={(teams) => {
+      shuffle={shuffle}
+      onExit={(teams, shuffle) => {
+        setShuffle(shuffle)
         setIsGame(false)
         setTeams(teams)
       }}
@@ -19,8 +22,10 @@ export default function App() {
   ) : (
     <CreateTeams
       teams={teams}
-      onStartGame={(teams) => {
+      shuffle={shuffle}
+      onStartGame={(teams, shuffle) => {
         setIsGame(true)
+        setShuffle(shuffle)
         setTeams(teams)
       }}
     />

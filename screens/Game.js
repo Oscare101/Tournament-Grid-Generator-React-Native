@@ -11,9 +11,12 @@ import {
 } from 'react-native'
 
 export default function Game(props) {
-  const [teams, setTeams] = useState(props.teams)
+  // const [teams, setTeams] = useState(props.teams)
+  const teams = props.teams
+
   const [listTeams, setListTeams] = useState([])
   const [winner, setwinner] = useState('')
+  const [shuffle, setShuffle] = useState(props.shuffle)
 
   function MakeCouples(length) {
     let list = []
@@ -153,10 +156,12 @@ export default function Game(props) {
   }
 
   function SetFirstCol(t, index) {
+    let teamsShuffle = shuffle ? t.sort((a, b) => 0.5 - Math.random()) : t
+    ////////////////////
     let list = listTeams
     for (let i = 0; i < listTeams[index].length; i++) {
-      list[index][i][0][0] = t[i * 2]
-      list[index][i][1][0] = t[i * 2 + 1]
+      list[index][i][0][0] = teamsShuffle[i * 2]
+      list[index][i][1][0] = teamsShuffle[i * 2 + 1]
     }
   }
 
@@ -185,7 +190,7 @@ export default function Game(props) {
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => props.onExit(teams)}
+        onPress={() => props.onExit(teams, shuffle)}
       >
         <Text style={styles.buttonText}>Exit</Text>
       </TouchableOpacity>
